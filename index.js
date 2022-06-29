@@ -1,8 +1,7 @@
-const express = require('express');
-const bodyparser = require('body-parser')
+'use strict'
 
-const server = express()
+const initApp = require('./src/app')
 
-// const PORT = process.env.PORT || 3000
+const app = initApp()
 
-server.listen(3000,() => console.log('PokeServer runing on port 3000 '))
+app.listen(3000, () => console.log('server runing on port 3000'));
