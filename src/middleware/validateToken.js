@@ -9,7 +9,7 @@ const Boom = require('@hapi/boom')
 function validateToken(req, res, next) {
   const { authorization } = req.headers; //headers es un objeto
 
-  if (req.url === 'auth/login') {
+  if (req.url === '/auth/login') {
     return next(Boom.unauthorized("Invalid Token"));
   }
 

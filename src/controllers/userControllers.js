@@ -3,7 +3,7 @@
 const authService = require('../services/userServices')
 
 class Auth {
-  constructor() { }
+  constructor() {}
 
   static login(req, res) {
 

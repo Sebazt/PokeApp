@@ -20,7 +20,8 @@ class AuthService{
 
   login({username, password}){
     const user = this.users.find((user) =>{
-      user.username === username && user.password === password
+      return user.username === username && user.password === password
+
     })
 
     if(!user){
