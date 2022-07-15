@@ -1,45 +1,40 @@
 'use strict';
 
-const { verify } = require('jsonwebtoken');
 const {verifyToken} = require('../utils/token')
-const authSerice = require('../services/userServices')
+const authService = require('../services/userServices')
 const Boom = require('@hapi/boom')
 
 
 function validateToken(req, res, next) {
-  const { authorization } = req.headers; //headers es un objeto
+  const { authorization } = req.headers
 
-  if (req.url === '/auth/login') {
-    return next(Boom.unauthorized("Invalid Token"));
-  }
+  // exclude login request
+  if (req.url === '/auth/login') return next()
 
-  if (!authorization) {
-    return next(Boom.unauthorized("Invalid Token"));
-  }
+  if (!authorization) return next(Boom.unauthorized('Token not sent'))
 
-  if (authorization.startsWith('Bearer')) {
-    return next(Boom.unauthorized("Invalid Token"));
-  }
+  // standard case
+  if (!authorization.startsWith('Bearer')) return next(Boom.unauthorized('Invalid token'))
 
-  const { 1: token } = authorization.split(' ');
+  const { 1: token } = authorization.split(' ')
 
-  if (!token) {
-    return next(Boom.unauthorized("Invalid Token"));
-  }
+  if (!token) return next(Boom.unauthorized('Invalid token'))
 
-  try{
+  try {
     const data = verifyToken(token)
-    const user = authSerice.getUserById(data.id / 150)
+    const user = authService.getUserById(data.id)
 
-    if (!user){
-      return res.status(401).send('Unauthoraized');
-    }
+    if (!user) return next(Boom.unauthorized('Invalid user'))
 
     req.user = user
+
     next()
-  }catch(err){
-    return res.status(401).send('Unauthoraized');
+
+  } catch (err) {
+    console.log(err)
+    return next(Boom.unauthorized('Invalid token'))
   }
+
 }
 
-module.exports = validateToken;
+module.exports = validateToken

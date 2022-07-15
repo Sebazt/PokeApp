@@ -28,7 +28,7 @@ class AuthService{
       throw new Error('User Not found')
     }
 
-    const token = createToken({id: user.id * 150, name: user.name})
+    const token = createToken({id: user.id, name: user.name})
     // console.log('token: ', token)
     return {token}
   }

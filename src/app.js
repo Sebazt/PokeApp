@@ -15,12 +15,12 @@ const error = require('./middleware/error')
 function initApp(){
   const app = express()
   app.use(bodyParser.json()) // My app only work with JSON
-  app.use(validateToken)
+  app.use(validateToken)  // por esta función me pide el token y el Bearer en todas las rutas
 
 
   initPokeRoutes(app)
   initAuthRoutes(app)
-  app.use(error) // siempre debe de ir de ultimo para que pase por las rutas
+  app.use(error)  // siempre debe de ir de ultimo para que pase por las rutas
   return app
 }
 
